@@ -33,13 +33,18 @@ namespace checkers
                         offset_x = i * 100;
                         add_rectangle(255, 0, 0, i, offset_x, j, offset_y);
 
-                        //Add square to Binding List
-                        board_square _Square = new (i, j, "red");
-                        board_builder.add_square(_Square);
-
                         if (j < 3) //add a red piece
                         {
                             add_circle(255, 150, 0, i, offset_x, j, offset_y);
+                            //Add square to Binding List
+                            board_square _Square = new(i, j, "red", true);
+                            board_builder.add_square(_Square);
+                        }
+                        else
+                        {
+                            //Add square to Binding List
+                            board_square _Square = new(i, j, "red", false);
+                            board_builder.add_square(_Square);
                         }
                         i++;
 
@@ -47,13 +52,18 @@ namespace checkers
                         offset_x = i * 100;
                         add_rectangle(0, 0, 0, i, offset_x, j, offset_y);
 
-                        //Add square to Binding List
-                        board_square _Square1 = new(i, j, "black");
-                        board_builder.add_square(_Square1);
-
                         if (j >= 5)//add a black piece
                         {
                             add_circle(255, 255, 255, i, offset_x, j, offset_y);
+                            //Add square to Binding List
+                            board_square _Square1 = new(i, j, "black", true);
+                            board_builder.add_square(_Square1);
+                        }
+                        else
+                        {
+                            //Add square to Binding List
+                            board_square _Square1 = new(i, j, "black", false);
+                            board_builder.add_square(_Square1);
                         }
 
                         i++;
@@ -64,13 +74,18 @@ namespace checkers
                         offset_x = i * 100;
                         add_rectangle(0, 0, 0, i, offset_x, j, offset_y);
 
-                        //Add square to Binding List
-                        board_square _Square2 = new(i, j, "black");
-                        board_builder.add_square(_Square2);
-
                         if (j >= 5)//add a black piece
                         {
                             add_circle(255, 255, 255, i, offset_x, j, offset_y);
+                            //Add square to Binding List
+                            board_square _Square2 = new(i, j, "black", true);
+                            board_builder.add_square(_Square2);
+                        }
+                        else
+                        {
+                            //Add square to Binding List
+                            board_square _Square2 = new(i, j, "black", false);
+                            board_builder.add_square(_Square2);
                         }
 
                         i++;
@@ -79,13 +94,18 @@ namespace checkers
                         offset_x = i * 100;
                         add_rectangle(255, 0, 0, i, offset_x, j, offset_y);
 
-                        //Add square to Binding List
-                        board_square _Square3 = new(i, j, "red");
-                        board_builder.add_square(_Square3);
-
                         if (j < 3)//add a red piece
                         {
                             add_circle(255, 150, 0, i, offset_x, j, offset_y);
+                            //Add square to Binding List
+                            board_square _Square3 = new(i, j, "red", true);
+                            board_builder.add_square(_Square3);
+                        }
+                        else
+                        {
+                            //Add square to Binding List
+                            board_square _Square3 = new(i, j, "red", false);
+                            board_builder.add_square(_Square3);
                         }
                         i++;
                     }
