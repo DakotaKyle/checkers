@@ -29,39 +29,51 @@ namespace checkers
                 {
                     if (j % 2 == 0)
                     {
-                        //Red square
+                        //Draw Red square
                         offset_x = i * 100;
                         add_rectangle(255, 0, 0, i, offset_x, j, offset_y);
 
-                        if (j < 3) //add a red piece
+                        if (j < 3) //add a Gold piece
                         {
+                            //Draw piece
                             add_circle(255, 150, 0, i, offset_x, j, offset_y);
-                            //Add square to Binding List
+
+                            //Add piece to Piece Bindling List
+                            piece piece = new(i, j, "Gold" , false, true);
+                            board_builder.add_piece(piece);
+
+                            //Add square to Board Binding List
                             board_square _Square = new(i, j, "red", true);
                             board_builder.add_square(_Square);
                         }
                         else
                         {
-                            //Add square to Binding List
+                            //Add square to Board Binding List
                             board_square _Square = new(i, j, "red", false);
                             board_builder.add_square(_Square);
                         }
                         i++;
 
-                        //Black square
+                        //Draw Black square
                         offset_x = i * 100;
                         add_rectangle(0, 0, 0, i, offset_x, j, offset_y);
 
-                        if (j >= 5)//add a black piece
+                        if (j >= 5)
                         {
+                            //Draw White piece
                             add_circle(255, 255, 255, i, offset_x, j, offset_y);
-                            //Add square to Binding List
+
+                            //Add piece to Piece Bindling List
+                            piece piece = new(i, j, "White", false, true);
+                            board_builder.add_piece(piece);
+
+                            //Add square to Board Binding List
                             board_square _Square1 = new(i, j, "black", true);
                             board_builder.add_square(_Square1);
                         }
                         else
                         {
-                            //Add square to Binding List
+                            //Add square to Board Binding List
                             board_square _Square1 = new(i, j, "black", false);
                             board_builder.add_square(_Square1);
                         }
@@ -74,16 +86,22 @@ namespace checkers
                         offset_x = i * 100;
                         add_rectangle(0, 0, 0, i, offset_x, j, offset_y);
 
-                        if (j >= 5)//add a black piece
+                        if (j >= 5)
                         {
+                            //Draw a White piece
                             add_circle(255, 255, 255, i, offset_x, j, offset_y);
-                            //Add square to Binding List
+
+                            //Add piece to Piece Bindling List
+                            piece piece = new(i, j, "White", false, true);
+                            board_builder.add_piece(piece);
+
+                            //Add square to Board Binding List
                             board_square _Square2 = new(i, j, "black", true);
                             board_builder.add_square(_Square2);
                         }
                         else
                         {
-                            //Add square to Binding List
+                            //Add square to Board Binding List
                             board_square _Square2 = new(i, j, "black", false);
                             board_builder.add_square(_Square2);
                         }
@@ -94,9 +112,15 @@ namespace checkers
                         offset_x = i * 100;
                         add_rectangle(255, 0, 0, i, offset_x, j, offset_y);
 
-                        if (j < 3)//add a red piece
+                        if (j < 3)
                         {
+                            //Draw a Gold piece
                             add_circle(255, 150, 0, i, offset_x, j, offset_y);
+
+                            //Add piece to Piece Bindling List
+                            piece piece = new(i, j, "Gold", false, true);
+                            board_builder.add_piece(piece);
+
                             //Add square to Binding List
                             board_square _Square3 = new(i, j, "red", true);
                             board_builder.add_square(_Square3);
