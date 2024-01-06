@@ -21,5 +21,10 @@ namespace checkers.Services
         {
             pieces.Add(piece);
         }
+
+        public static void remove_piece(piece piece)
+        {
+            pieces.Remove(piece);
+        }
     }
 }

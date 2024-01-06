@@ -5,11 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:checkers"
         mc:Ignorable="d"
-        Title="ThinkAI" Height="900" Width="1200">
+        Title="ThinkAI" Height="900" Width="1200"
+        ResizeMode="NoResize">
     <Canvas
         x:Name="checker_board"
         Background="BlanchedAlmond"
         Height="800"
-        Width="808">
+        Width="808"
+        MouseLeftButtonDown="checker_board_MouseLeftButtonDown"
+        MouseLeftButtonUp="checker_board_MouseLeftButtonUp">
     </Canvas>
 </Window>
