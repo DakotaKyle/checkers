@@ -4,11 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Input;
-using System.Numerics;
-using System.CodeDom;
-using System.Configuration;
-using System.Reflection;
-using System.ComponentModel;
+using System;
 
 namespace checkers
 {
@@ -24,138 +20,53 @@ namespace checkers
 
         public MainWindow()
         {
-            int j = 0; //j represents the y-axis
-            int offset_x, offset_y;
-
             InitializeComponent();
             /*
              * Build the checkerboard
              */
-            while (j <= 7)
+            for (int j = 0; j <= 7; j++)
             {
-                int i = 0; //i represents the x-axis
-                offset_y = j * 100;
-
-                while (i <= 7)
+                int offset_y = j * 100;
+                for (int i = 0; i <= 7; i++)
                 {
-                    if (j % 2 == 0)
+                    int offset_x = i * 100;
+                    bool isEvenRow = j % 2 == 0;
+                    bool isEvenColumn = i % 2 == 0;
+
+                    // Determine the color of the square
+                    bool isBlackSquare = isEvenRow ? isEvenColumn : !isEvenColumn;
+                    string squareColor = isBlackSquare ? "black" : "red";
+                    add_rectangle(isBlackSquare ? (byte)0 : (byte)255, 0, 0, i, offset_x, j, offset_y);
+
+                    // Determine the color of the piece
+                    string pieceColor = null;
+                    if (isBlackSquare && j < 3) pieceColor = "Gold";
+                    else if (isBlackSquare && j >= 5) pieceColor = "White";
+
+                    if (pieceColor != null)
                     {
-                        //Draw Red square
-                        offset_x = i * 100;
-                        add_rectangle(255, 0, 0, i, offset_x, j, offset_y);
+                        // Draw the piece
+                        byte r = pieceColor == "Gold" ? (byte)255 : (byte)255;
+                        byte g = pieceColor == "Gold" ? (byte)150 : (byte)255;
+                        byte b = pieceColor == "Gold" ? (byte)0 : (byte)255;
+                        add_circle(r, g, b, i, offset_x, j, offset_y);
+                        pieceCount++;
 
-                        if (j < 3) //add a Gold piece
-                        {
-                            //Draw Gold piece
-                            add_circle(255, 150, 0, i, offset_x, j, offset_y);
-                            pieceCount++;
-
-                            //Add piece to Piece Binding List
-                            piece piece = new(pieceCount, i, j, "Gold" , false, true);
-                            board_builder.add_piece(piece);
-
-                            //Add square to Board Binding List
-                            board_square _Square = new(i, j, "red", true);
-                            board_builder.add_square(_Square);
-                        }
-                        else
-                        {
-                            //Add square to Board Binding List
-                            board_square _Square = new(i, j, "red", false);
-                            board_builder.add_square(_Square);
-                        }
-                        i++;
-
-                        //Draw Black square
-                        offset_x = i * 100;
-                        add_rectangle(0, 0, 0, i, offset_x, j, offset_y);
-
-                        if (j >= 5)
-                        {
-                            //Draw White piece
-                            add_circle(255, 255, 255, i, offset_x, j, offset_y);
-                            pieceCount++;
-
-                            //Add piece to Piece Binding List
-                            piece piece = new(pieceCount, i, j, "White", false, true);
-                            board_builder.add_piece(piece);
-
-                            //Add square to Board Binding List
-                            board_square _Square1 = new(i, j, "black", true);
-                            board_builder.add_square(_Square1);
-                        }
-                        else
-                        {
-                            //Add square to Board Binding List
-                            board_square _Square1 = new(i, j, "black", false);
-                            board_builder.add_square(_Square1);
-                        }
-
-                        i++;
+                        // Add the piece to the Piece Binding List
+                        piece piece = new(pieceCount, i, j, pieceColor, false, true);
+                        board_builder.add_piece(piece);
                     }
-                    else
-                    {
-                        //Black square
-                        offset_x = i * 100;
-                        add_rectangle(0, 0, 0, i, offset_x, j, offset_y);
 
-                        if (j >= 5)
-                        {
-                            //Draw a White piece
-                            add_circle(255, 255, 255, i, offset_x, j, offset_y);
-                            pieceCount++;
-
-                            //Add piece to Piece Bindling List
-                            piece piece = new(pieceCount, i, j, "White", false, true);
-                            board_builder.add_piece(piece);
-
-                            //Add square to Board Binding List
-                            board_square _Square2 = new(i, j, "black", true);
-                            board_builder.add_square(_Square2);
-                        }
-                        else
-                        {
-                            //Add square to Board Binding List
-                            board_square _Square2 = new(i, j, "black", false);
-                            board_builder.add_square(_Square2);
-                        }
-
-                        i++;
-
-                        //Red square
-                        offset_x = i * 100;
-                        add_rectangle(255, 0, 0, i, offset_x, j, offset_y);
-
-                        if (j < 3)
-                        {
-                            //Draw a Gold piece
-                            add_circle(255, 150, 0, i, offset_x, j, offset_y);
-                            pieceCount++;
-
-                            //Add piece to Piece Binding List
-                            piece piece = new(pieceCount, i, j, "Gold", false, true);
-                            board_builder.add_piece(piece);
-
-                            //Add square to Binding List
-                            board_square _Square3 = new(i, j, "red", true);
-                            board_builder.add_square(_Square3);
-                        }
-                        else
-                        {
-                            //Add square to Binding List
-                            board_square _Square3 = new(i, j, "red", false);
-                            board_builder.add_square(_Square3);
-                        }
-                        i++;
-                    }
+                    // Add the square to the Board Binding List
+                    board_square _Square = new(i, j, squareColor, pieceColor != null);
+                    board_builder.add_square(_Square);
                 }
-                j++;
             }
         }
 
-        private void add_rectangle(byte r, byte b, byte g, int x, int offset_x, int y, int offset_y) //Pass in 3 seperate bytes for color, x-axis, x-offset, y-axis, and y-offset
+        private void add_rectangle(byte r, byte g, byte b, int x, int offset_x, int y, int offset_y) //Pass in 3 seperate bytes for color, x-axis, x-offset, y-axis, and y-offset
         {
-            Brush sq_color = new SolidColorBrush(Color.FromRgb(r, b, g));
+            Brush sq_color = new SolidColorBrush(Color.FromRgb(r, g, b));
 
             Rectangle rec = new Rectangle
             {
@@ -180,11 +91,12 @@ namespace checkers
 
             if (source.Equals("System.Windows.Shapes.Ellipse"))
             {
-                pointer.X = Mouse.GetPosition(this).X;
-                pointer.Y = Mouse.GetPosition(this).Y;
+                pointer.X = Mouse.GetPosition(this).X - checker_board.Margin.Left;
+                pointer.Y = Mouse.GetPosition(this).Y - checker_board.Margin.Top;
 
-                x_offset = ((int)pointer.X / 100) - 2;
-                y_offset = (int)pointer.Y / 100;
+                x_offset = (int)Math.Floor(pointer.X / 100.0 - 2);
+                y_offset = (int)Math.Floor(pointer.Y / 100.0);
+
 
                 foreach (piece piece in board_builder.pieces)
                 {
@@ -201,13 +113,13 @@ namespace checkers
                     }
                 }
             }
-            else if (source.Equals("System.Windows.Shapes.Rectangle"))
+            else if (source.Equals("System.Windows.Shapes.Rectangle")) // Current logic is used for testing purposes.
             {
-                pointer.X = Mouse.GetPosition(this).X;
-                pointer.Y = Mouse.GetPosition(this).Y;
+                pointer.X = Mouse.GetPosition(this).X - checker_board.Margin.Left;
+                pointer.Y = Mouse.GetPosition(this).Y - checker_board.Margin.Top;
 
-                x_offset = ((int)pointer.X / 100) - 2;
-                y_offset = (int)pointer.Y / 100;
+                x_offset = (int)Math.Floor(pointer.X / 100.0 - 1.9);
+                y_offset = (int)Math.Floor(pointer.Y / 100.0 - 0.25);
 
                 MessageBox.Show("X: " + x_offset + "Y: " + y_offset);
             }
@@ -225,11 +137,12 @@ namespace checkers
 
                 if (source.Equals("System.Windows.Shapes.Rectangle"))
                 {
-                    pointer.X = Mouse.GetPosition(this).X;
-                    pointer.Y = Mouse.GetPosition(this).Y;
+                    pointer.X = Mouse.GetPosition(this).X - checker_board.Margin.Left;
+                    pointer.Y = Mouse.GetPosition(this).Y - checker_board.Margin.Top;
 
-                    x_offset = ((int)pointer.X / 100) - 2;
-                    y_offset = (int)pointer.Y / 100;
+                    x_offset = (int)Math.Floor(pointer.X / 100.0 - 2);
+                    y_offset = (int)Math.Floor(pointer.Y / 100.0 - 0.25);
+
 
                     int id = selectedPiece.id;
                     int x = x_offset;
@@ -244,9 +157,7 @@ namespace checkers
                     g = 255;
 
                     board_builder.remove_piece(selectedPiece);
-
                     Ellipse oldpoint = (Ellipse)objectType;
-
                     checker_board.Children.Remove(oldpoint);
 
                     piece newPiece = new(id, x, y, color, isking, isalive);
