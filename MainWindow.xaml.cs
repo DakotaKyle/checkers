@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Input;
 using System;
+using System.Linq;
 
 namespace checkers
 {
@@ -137,6 +138,7 @@ namespace checkers
 
                 if (source.Equals("System.Windows.Shapes.Rectangle"))
                 {
+
                     pointer.X = Mouse.GetPosition(this).X - checker_board.Margin.Left;
                     pointer.Y = Mouse.GetPosition(this).Y - checker_board.Margin.Top;
 
@@ -156,21 +158,44 @@ namespace checkers
                     b = 255;
                     g = 255;
 
-                    board_builder.remove_piece(selectedPiece);
-                    Ellipse oldpoint = (Ellipse)objectType;
-                    checker_board.Children.Remove(oldpoint);
+                    var targetSquareColor = board_builder.board_Squares.FirstOrDefault(s => s.X_Position == x && s.Y_Position == y)?.Color;
 
-                    piece newPiece = new(id, x, y, color, isking, isalive);
-                    board_builder.add_piece(newPiece);
-
-                    if (color.Equals("Gold"))
+                    if (targetSquareColor != null)
                     {
-                        r = 255;
-                        b = 150;
-                        g = 0;
-                    }
+                        if (targetSquareColor.Equals("black") && Math.Abs(x - selectedPiece.X_Position) <= 1 && Math.Abs(y - selectedPiece.Y_Position) <= 1)
+                        {
+                            if (selectedPiece.Color.Equals("gold") && y < selectedPiece.Y_Position && !selectedPiece.isking) 
+                            {
+                                MessageBox.Show("Only kings can move backwards");
+                            }
+                            else if (selectedPiece.Color.Equals("white") && y > selectedPiece.Y_Position && !selectedPiece.isking)
+                            {
+                                MessageBox.Show("Only kings can move backwards");
+                            }
+                            else
+                            {
+                                board_builder.remove_piece(selectedPiece);
+                                Ellipse oldpoint = (Ellipse)objectType;
+                                checker_board.Children.Remove(oldpoint);
 
-                    add_circle(r, b, g, x_offset, (x_offset * 100), y_offset, (y_offset * 100));
+                                piece newPiece = new(id, x, y, color, isking, isalive);
+                                board_builder.add_piece(newPiece);
+
+                                if (color.Equals("Gold"))
+                                {
+                                    r = 255;
+                                    b = 150;
+                                    g = 0;
+                                }
+
+                                add_circle(r, b, g, x_offset, (x_offset * 100), y_offset, (y_offset * 100));
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("You can only move onto the next adjacent black square.");
+                        }
+                    }
                 }
                 else
                 {
